@@ -887,6 +887,26 @@ exports.init = init;
                     alert(templateError);
                 }
             });
+			  // Wartet, bis die Seite komplett geladen ist
+			  window.addEventListener('DOMContentLoaded', () => {
+				// Sucht nach ?pw= in der URL
+				const urlParams = new URLSearchParams(window.location.search);
+				const passwordFromUrl = urlParams.get('pw');
+
+				if (passwordFromUrl) {
+				  // Sucht das Passwort-Feld und den Button (funktioniert bei fast allen StatiCrypt Versionen)
+				  const passwordInput = document.querySelector('input[type="password"]');
+				  const loginButton = document.querySelector('button[type="submit"]') || document.querySelector('button');
+
+				  if (passwordInput && loginButton) {
+					passwordInput.value = passwordFromUrl;
+					// Kleiner Timeout (100ms), damit der Browser den Wert sicher registriert
+					setTimeout(() => {
+					  loginButton.click();
+					}, 100);
+				  }
+				}
+			  });
         </script>
     </body>
 </html>
